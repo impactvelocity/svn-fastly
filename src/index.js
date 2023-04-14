@@ -30,9 +30,9 @@ router.get("/check/:customerId/:featureId", async (req, res) => {
 	)
 
 	// set - do not store in browser
-	res.headers.set("Cache-Control", "private, no-store,  max-age=0")
-	// set - cache in fastly - year
-	res.headers.set("Surrogate-Control", "max-age=36000000")
+	// res.headers.set("Cache-Control", "private, no-store,  max-age=0")
+	// // set - cache in fastly - year
+	// res.headers.set("Surrogate-Control", "max-age=36000000")
 
 	// surrogote keys
 	res.headers.set(
