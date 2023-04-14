@@ -10,3 +10,9 @@ service_id = "XH7rAOBUfhgesdMmpXwVl5"
 
 [scripts]
   build = "npm run build"
+
+[local_server]
+  [local_server.backends]
+    [local_server.backends.vercel]
+      url = "https://api.svn.sh"
+      override_host = "api.svn.sh"
