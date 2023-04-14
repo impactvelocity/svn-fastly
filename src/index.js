@@ -1,19 +1,5 @@
-/// <reference types="@fastly/js-compute" />
-
 import { Router } from "@fastly/expressly"
 const router = new Router()
-
-// const sharedVercelBackend = {
-// 	name: "vercel",
-// 	target: "api.svn.sh",
-// 	hostOverride: "api.svn.sh",
-// 	connectTimeout: 1000,
-// 	firstByteTimeout: 15000,
-// 	betweenBytesTimeout: 10000,
-// 	useSSL: true,
-// 	sslMinVersion: 1.3,
-// 	sslMaxVersion: 1.3,
-// }
 
 // Use middleware to set a header
 router.use((req, res) => {
@@ -29,8 +15,6 @@ router.get("/check/:customerId/:featureId", async (req, res) => {
 	const customerId = req.params.customerId
 	const featureId = req.params.featureId
 
-	// const backend = new Backend(sharedVercelBackend)
-
 	// get tenantKey from headers
 	const tenantKey = req.headers.get("x-tenant-key")
 
@@ -45,8 +29,13 @@ router.get("/check/:customerId/:featureId", async (req, res) => {
 		}
 	)
 
+	// set - do not store in browser
+	res.headers.set("Cache-Control", "private, no-store,  max-age=0")
+	// set - cache in fastly - year
+	res.headers.set("Surrogate-Control", "max-age=36000000")
+
 	// surrogote keys
-	res.headers.append(
+	res.headers.set(
 		"Surrogate-Key",
 		`check-feature ${tenantKey} ${customerId} ${featureId}`
 	)
@@ -57,8 +46,6 @@ router.get("/check/:customerId/:featureId", async (req, res) => {
 router.get("/check-limit/:customerId/:featureId", async (req, res) => {
 	const customerId = req.params.customerId
 	const featureId = req.params.featureId
-
-	// const backend = new Backend(sharedVercelBackend)
 
 	// get tenantKey from headers
 	const tenantKey = req.headers.get("x-tenant-key")
@@ -75,8 +62,13 @@ router.get("/check-limit/:customerId/:featureId", async (req, res) => {
 		}
 	)
 
+	// set - do not store in browser
+	res.headers.set("Cache-Control", "private, no-store,  max-age=0")
+	// set - cache in fastly - year
+	res.headers.set("Surrogate-Control", "max-age=36000000")
+
 	// surrogote keys
-	res.headers.append(
+	res.headers.set(
 		"Surrogate-Key",
 		`check-feature ${tenantKey} ${customerId} ${featureId}`
 	)
